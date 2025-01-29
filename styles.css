@@ -1,0 +1,165 @@
+/* global */
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    color: #eee;
+    cursor: pointer;
+    font-size: 1.25rem;
+}
+
+/* body */
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 26px;
+}
+
+/* header */
+
+.header {
+    font-size: 2.5rem;
+    font-weight: 1000;
+}
+
+/* calculator body */
+
+#calculator {
+    background-color: rgb(43, 43, 43);
+    box-shadow: 4px 6px 4px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    border-radius: 10px 10px 20px 20px;
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    color: #eee;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* visor */
+
+.visor {
+    background-color: #C2C4B6;
+    height: 130px;
+    width: auto;
+    padding: 20px 16px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: end;
+    gap: 10px;
+}
+
+.result {
+    font-size: 2.25rem;
+    min-height: 42px;
+}
+
+.operation {
+    color: #666;
+    font-size: 1.625rem;
+    min-height: 30px;
+}
+
+/* top buttons */
+
+.top-buttons {
+    margin: 20px 0px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#plus-or-minus {
+    width: 70px;
+}
+
+.top-buttons button {
+    height: 60px;
+    width: 110px;
+    border-radius: 12px;
+    background-color: #2C3D35;
+    transition: transform 0.15s ease;
+}
+
+.top-buttons button:hover {
+    transition: 0.15s;
+    transform: scale(1.01);
+}
+
+.top-buttons button:active {
+    transition: 0.15s;
+    transform: scale(0.95);
+}
+
+/* number and operator buttons */
+
+.buttons {
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.buttons button {
+    height: 64px;
+    width: 64px;
+    border-radius: 64px;
+    transition: transform 0.15s ease;
+}
+
+.number-button {
+    background-color: #0E0D11;
+}
+
+.operation-button {
+    background-color: #684941;
+}
+
+#button-equals {
+    background-color: #E9AD54;
+}
+
+.number-button:hover,
+.operation-button:hover,
+#button-equals:hover {
+    transition: 0.15s;
+    transform: scale(1.05);
+}
+
+.number-button:active,
+.operation-button:active,
+#button-equals:active  {
+    transition: 0.1s;
+    transform: scale(0.95);
+}
+
