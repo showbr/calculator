@@ -2,7 +2,6 @@
 
 todo:
 add keyboard compatibility
-add erase function
 truncate exceeding numbers
 
 */
@@ -100,6 +99,7 @@ buttons.addEventListener("click", (e) => {
                 operator = buttonPressed;
             }
             else if (buttonPressed === "=") {
+                operator = "";
                 resultBox.textContent = firstNumber;
             }
         }
@@ -171,3 +171,19 @@ changeSignalButton.addEventListener("click", () => {
 
     printOperation();
 }); 
+
+const eraseButton = document.querySelector(".erase");
+
+eraseButton.addEventListener("click", () => {
+    if (firstNumber && !secondNumber && !operator) {
+        firstNumber = firstNumber.slice(0, firstNumber.length - 1);
+    }
+    else if (operator && !secondNumber) {
+        operator = "";
+    }
+    else if (firstNumber && secondNumber) {
+        secondNumber = secondNumber.slice(0, secondNumber.length - 1);
+    }
+
+    printOperation();
+});
