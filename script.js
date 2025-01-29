@@ -3,7 +3,6 @@
 todo:
 add keyboard compatibility
 add erase function
-add +/- function
 truncate exceeding numbers
 
 */
@@ -147,3 +146,28 @@ buttons.addEventListener("click", (e) => {
         
     }
 });
+
+const changeSignalButton = document.querySelector("#plus-or-minus");
+
+changeSignalButton.addEventListener("click", () => {
+    if (!firstNumber) {
+        firstNumber = "-";
+    }
+    else if (firstNumber === "-") {
+        firstNumber = "";
+    }
+    else if (!operator) {
+        firstNumber = String(-Number(firstNumber));
+    }
+    else if (!secondNumber) {
+        secondNumber = "-";
+    }
+    else if (secondNumber === "-") {
+        secondNumber = "";
+    }
+    else {
+        secondNumber = String(-Number(secondNumber));
+    }
+
+    printOperation();
+}); 
