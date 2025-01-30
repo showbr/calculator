@@ -1,11 +1,9 @@
 /*
 
 todo:
-add keyboard compatibility
 truncate exceeding numbers
 
 */
-
 
 function add(a, b) {
     return a + b;
@@ -26,14 +24,29 @@ function divide(a, b) {
     return a / b;
 }
 
+const operations = {
+    "+": add,
+    "-": subtract,
+    "x": multiply,
+    "/": divide
+};
+
 function operate(a, b, operation) {
-    if (operation === "+") return add(a, b);
-    if (operation === "-") return subtract(a, b);
-    if (operation === "x") return multiply(a, b);
-    if (operation === "/") return divide(a, b);
+    return operations[operation](a, b);
 }
 
-function clearResult() {
+// handle numbers and dots logic
+function insertNumber(number, digit) {
+    if (digit === ".") {
+        if (number) {
+            return number.includes(digit) ? number : number + digit;
+        }
+        return "0."
+    }
+    return number + digit;
+}
+
+function clearResultBox() {
     resultBox.textContent = "0";
 }
 
@@ -55,19 +68,9 @@ let operator = "";
 const operationBox = document.querySelector(".operation");
 const resultBox = document.querySelector(".result");
 
-// clear button logic
-const clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click", () => {
-    operationBox.textContent = "";
-    clearResult();
-    resetNumbers();
-}); 
-
 const buttons = document.querySelector(".buttons");
-
 buttons.addEventListener("click", (e) => {
 
-    // checks if its pressing the buttons, not the background
     if (buttons !== e.target) {
         
         const buttonPressed = e.target.textContent;
@@ -77,25 +80,14 @@ buttons.addEventListener("click", (e) => {
             resetNumbers();
         }
 
-        // checks if it has no operator yet, and gets the first number
-        if (!operator) {
-            if (!isNaN(numberPressed)) {
-                firstNumber += numberPressed;
-            }
-            else if (buttonPressed === ".") {
-                if (!firstNumber) {
-                    firstNumber += "0" + buttonPressed;
-                }
-                else if (!firstNumber.includes(".")) {
-                    firstNumber += buttonPressed;
-                }
-            }
+        // if there is no operator and a number or dot was pressed, inserts the first number
+        if (!operator && (!isNaN(numberPressed) || buttonPressed === ".")) {
+            firstNumber = insertNumber(firstNumber, buttonPressed);
         }
 
-        // checks if it has a first number but no second number, and allows it to get an operator
-        // or to print directly to the screen
+        // if there is a first number, awaits for a operator or the = button
         if (firstNumber && !secondNumber) {
-            if (isNaN(numberPressed) && buttonPressed !== "=" && buttonPressed != ".") {
+            if (isNaN(numberPressed) && buttonPressed !== "=" && buttonPressed !== ".") {
                 operator = buttonPressed;
             }
             else if (buttonPressed === "=") {
@@ -104,51 +96,46 @@ buttons.addEventListener("click", (e) => {
             }
         }
 
-        // checks if it has already an operator, and gets the second number
-        if (operator) {
-            if (!isNaN(numberPressed)) {
-                secondNumber += numberPressed;
-            }
-            else if (buttonPressed === ".") {
-                if (!secondNumber) {
-                    secondNumber += "0" + buttonPressed;
-                }
-                else if (!secondNumber.includes(".")) {
-                    secondNumber += buttonPressed;
-                }
-            }
+        // if there is a operator and a number or dot was pressed, inserts the second number
+        if (operator && (!isNaN(numberPressed) || buttonPressed === ".")) {
+            secondNumber = insertNumber(secondNumber, buttonPressed);
         }
 
         printOperation();
 
-        // if the first number and second number are already typed, allows it to print the result to the screen
-        if (firstNumber && secondNumber) {
-            if (isNaN(numberPressed) && buttonPressed != ".") {
-                const result = operate(Number(firstNumber), Number(secondNumber), operator);
+        // if there are both numbers, awaits for a operator or = to be pressed
+        if (firstNumber && secondNumber && isNaN(numberPressed) && buttonPressed != ".") {
+            const result = operate(Number(firstNumber), Number(secondNumber), operator);
 
-                // the original expression remains in the screen
-                if (buttonPressed === "=") {
-                    resultBox.textContent = result;
-                    resetNumbers();
-                    firstNumber = String(result);
-                }
-                // continues directly the expression
-                else {
-                    clearResult();
-                    resetNumbers();
-                    resultBox.textContent = result;
+            if (buttonPressed === "=") {
+                resultBox.textContent = result;
+                resetNumbers();
+                firstNumber = String(result);
+            }
+            else {
+                clearResultBox();
+                resetNumbers();
+                resultBox.textContent = result;
+                if (result !== "ERROR!") {
                     firstNumber = String(result);
                     operator = buttonPressed;
                     printOperation();
                 }
             }
         }
-        
     }
 });
 
-const changeSignalButton = document.querySelector("#plus-or-minus");
 
+const clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click", () => {
+    operationBox.textContent = "";
+    clearResultBox();
+    resetNumbers();
+}); 
+
+
+const changeSignalButton = document.querySelector("#plus-or-minus");
 changeSignalButton.addEventListener("click", () => {
     if (!firstNumber) {
         firstNumber = "-";
@@ -172,8 +159,8 @@ changeSignalButton.addEventListener("click", () => {
     printOperation();
 }); 
 
-const eraseButton = document.querySelector(".erase");
 
+const eraseButton = document.querySelector(".erase");
 eraseButton.addEventListener("click", () => {
     if (firstNumber && !secondNumber && !operator) {
         firstNumber = firstNumber.slice(0, firstNumber.length - 1);
@@ -186,4 +173,76 @@ eraseButton.addEventListener("click", () => {
     }
 
     printOperation();
+});
+
+
+const numbers = "0123456789";
+const operators = "x+-/="
+
+document.addEventListener("keydown", (e) => {
+
+    if (firstNumber === "ERROR!") {
+        resetNumbers();
+    }
+
+    let keyPressed = e.key;
+    if (keyPressed === "*") keyPressed = "x";
+    if (keyPressed === "Enter") keyPressed = "=";
+
+    if (keyPressed === "Backspace") {
+        if (firstNumber && !secondNumber && !operator) {
+            firstNumber = firstNumber.slice(0, firstNumber.length - 1);
+        }
+        else if (operator && !secondNumber) {
+            operator = "";
+        }
+        else if (firstNumber && secondNumber) {
+            secondNumber = secondNumber.slice(0, secondNumber.length - 1);
+        }
+    }
+
+    // if there is no operator, registers keyboard input to the first number
+    if (!operator && (keyPressed === "." || numbers.includes(keyPressed))) {
+        firstNumber = insertNumber(firstNumber, keyPressed);
+    }
+
+    // checks if there is a first number, no second number, and an operator was pressed
+    if (firstNumber && operators.includes(keyPressed) && !secondNumber) {
+        if (keyPressed === "=") {
+            operator = "";
+            resultBox.textContent = firstNumber;
+        }
+        else {
+            operator = keyPressed;
+        }
+    }
+
+    // if there is a operator and a first number, registers keyboard input to the second number
+    if (firstNumber && operator && (keyPressed === "." || numbers.includes(keyPressed))) {
+        secondNumber = insertNumber(secondNumber, keyPressed);
+    }
+
+    printOperation();
+
+    // if there is a first and second numbers, a operator, and a operator or equals key was pressed, prints the result
+    if (firstNumber && operator && secondNumber && operators.includes(keyPressed)) {
+        const result = operate(Number(firstNumber), Number(secondNumber), operator);
+        
+        if (keyPressed === "=") {
+            resultBox.textContent = result;
+            resetNumbers();
+            firstNumber = String(result);
+        }
+        else {
+            clearResultBox();
+            resetNumbers();
+            resultBox.textContent = result;
+            if (result !== "ERROR!") {
+                firstNumber = String(result);
+                operator = keyPressed;
+                printOperation();
+            }
+        }
+    } 
+    
 });

@@ -145,20 +145,20 @@ button {
     background-color: #684941;
 }
 
-#button-equals {
+#equals-button {
     background-color: #E9AD54;
 }
 
 .number-button:hover,
 .operation-button:hover,
-#button-equals:hover {
+#equals-button:hover {
     transition: 0.15s;
     transform: scale(1.05);
 }
 
 .number-button:active,
 .operation-button:active,
-#button-equals:active  {
+#equals-button:active  {
     transition: 0.1s;
     transform: scale(0.95);
 }
