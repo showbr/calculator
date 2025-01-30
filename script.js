@@ -1,10 +1,3 @@
-/*
-
-todo:
-truncate exceeding numbers
-
-*/
-
 function add(a, b) {
     return a + b;
 }
@@ -44,6 +37,15 @@ function insertNumber(number, digit) {
         return "0."
     }
     return number + digit;
+}
+
+function roundResult(result) {
+    convertedResult = Math.round(result * 10**13) / 10**13; // rounds decimal numbers up to 13 digits;
+    // if the number is larger than 10 ** 9
+    if (convertedResult >= 10 ** 9) {
+        return convertedResult.toExponential(9); // converts it to exponential form with 9 digits
+    }
+    return convertedResult;
 }
 
 function clearResultBox() {
@@ -105,7 +107,7 @@ buttons.addEventListener("click", (e) => {
 
         // if there are both numbers, awaits for a operator or = to be pressed
         if (firstNumber && secondNumber && isNaN(numberPressed) && buttonPressed != ".") {
-            const result = operate(Number(firstNumber), Number(secondNumber), operator);
+            const result = roundResult(operate(Number(firstNumber), Number(secondNumber), operator));
 
             if (buttonPressed === "=") {
                 resultBox.textContent = result;
@@ -226,7 +228,7 @@ document.addEventListener("keydown", (e) => {
 
     // if there is a first and second numbers, a operator, and a operator or equals key was pressed, prints the result
     if (firstNumber && operator && secondNumber && operators.includes(keyPressed)) {
-        const result = operate(Number(firstNumber), Number(secondNumber), operator);
+        const result = roundResult(operate(Number(firstNumber), Number(secondNumber), operator));
         
         if (keyPressed === "=") {
             resultBox.textContent = result;

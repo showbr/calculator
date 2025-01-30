@@ -66,14 +66,14 @@ button {
 
 .visor {
     background-color: #C2C4B6;
-    height: 130px;
-    width: auto;
-    padding: 20px 16px;
+    word-break: break-word;
+    padding: 24px 16px;
     border-radius: 3px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: end;
+    flex-basis: 140px;
     gap: 10px;
 }
 
@@ -83,6 +83,7 @@ button {
 }
 
 .operation {
+    display: flex;
     color: #666;
     font-size: 1.625rem;
     min-height: 30px;
