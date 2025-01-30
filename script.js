@@ -41,8 +41,8 @@ function insertNumber(number, digit) {
 
 function roundResult(result) {
     convertedResult = Math.round(result * 10**13) / 10**13; // rounds decimal numbers up to 13 digits;
-    // if the number is larger than 10 ** 9
-    if (convertedResult >= 10 ** 9) {
+    // if the number has more than 13 digits or 12 + .
+    if (String(convertedResult).length > 13) {
         return convertedResult.toExponential(9); // converts it to exponential form with 9 digits
     }
     return convertedResult;
