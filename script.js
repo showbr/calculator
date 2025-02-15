@@ -40,6 +40,10 @@ function insertNumber(number, digit) {
 }
 
 function roundResult(result) {
+    if (result === "ERROR!") {
+        return result;
+    }
+
     convertedResult = Math.round(result * 10**13) / 10**13; // rounds decimal numbers up to 13 digits;
     // if the number has more than 13 digits or 12 + .
     if (String(convertedResult).length > 13) {
